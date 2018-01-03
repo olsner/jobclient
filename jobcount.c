@@ -3,6 +3,9 @@
 
 #include "jobclient.h"
 
+#define MAX_TOKENS 4096
+static char tokens[MAX_TOKENS];
+
 int main() {
     int jobserver_fds[2];
     if (!parse_makeflags(jobserver_fds)) {
@@ -11,8 +14,6 @@ int main() {
     fcntl(jobserver_fds[0], F_SETFL, O_NONBLOCK);
 
     size_t n = 0;
-    static const size_t MAX_TOKENS = 4096;
-    static char tokens[MAX_TOKENS];
     while (n < MAX_TOKENS && acquire_token(jobserver_fds, &tokens[n])) {
         n++;
     }
