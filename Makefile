@@ -1,6 +1,6 @@
 CFLAGS = -Wall -Werror
 
-PROGRAMS = jobclient jobforce
+PROGRAMS = jobclient jobforce jobcount
 
 all: $(PROGRAMS)
 
@@ -12,7 +12,7 @@ $(PROGRAMS): jobclient.h
 %: %.c
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< $(LIBS)
 
-TESTS = 9
+TESTS = 10
 
 test: $(PROGRAMS)
 	@for (( t = 1; t <= $(TESTS); t++ )); do echo Running test$$t...; env -i make -j3 test$$t || break; echo; done
@@ -84,3 +84,7 @@ test9:
 	 echo "done."; \
 	 ./jobforce 1; \
 	) | ts
+
+test10:
+	+test `./jobcount` -eq 2
+	@echo "PASS - job count was 2"
