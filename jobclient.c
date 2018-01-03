@@ -9,7 +9,12 @@ extern char **environ;
 
 #include "jobclient.h"
 
-int main(int argc, const char *argv[]) {
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        fprintf(stderr, "Usage: jobclient CMD [ARGS...]\n");
+        return 1;
+    }
+
     int jobserver_fds[2];
     if (!parse_makeflags(jobserver_fds)) {
         return 1;
@@ -30,7 +35,7 @@ int main(int argc, const char *argv[]) {
     int res = posix_spawnp(&pid, argv[1],
             NULL, /* file actions */
             NULL, /* attrs */
-            (char *const*)argv + 1,
+            argv + 1,
             environ);
     if (res < 0) {
         perror("posix_spawnp");
