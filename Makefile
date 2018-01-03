@@ -4,6 +4,9 @@ PROGRAMS = jobclient jobforce
 
 all: $(PROGRAMS)
 
+clean::
+	rm -f $(PROGRAMS)
+
 $(PROGRAMS): jobclient.h
 
 %: %.c
