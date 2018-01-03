@@ -1,13 +1,10 @@
-#include <ctype.h>
 #include <spawn.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-
-extern char **environ;
+#include <sys/wait.h>
 
 #include "jobclient.h"
+
+extern char **environ;
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {

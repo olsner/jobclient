@@ -1,6 +1,7 @@
-#include "jobclient.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-#include <ctype.h>
+#include "jobclient.h"
 
 int main(int argc, const char *argv[]) {
     if (argc != 2) {
