@@ -1,5 +1,6 @@
 #!/bin/sh
 
+echo Sleeping for "$1"s
 sleep "$1"
 shift
 echo "$@"

@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <spawn.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,50 +7,25 @@
 
 extern char **environ;
 
-// https://www.gnu.org/software/make/manual/html_node/POSIX-Jobserver.html#POSIX-Jobserver
-
-static int parse_makeflags(int *fds) {
-    const char *makeflags = getenv("MAKEFLAGS");
-    if (!makeflags) {
-        fprintf(stderr, "job: error: MAKEFLAGS not set\n");
-        return 0;
-    }
-
-    static const char flagname[] = "--jobserver-fds=";
-    const char *p = strstr(makeflags, flagname);
-    if (!p) {
-        fprintf(stderr, "job: error: --jobserver-fds not in MAKEFLAGS (%s)\n", makeflags);
-        return 0;
-    }
-    p += sizeof(flagname) - 1;
-
-    const char *c = strchr(p, ',');
-    if (!c) {
-        fprintf(stderr, "job: error: Incorrect --jobserver-fds format\n");
-        return 0;
-    }
-    c++;
-
-    fds[0] = atoi(p);
-    fds[1] = atoi(c);
-
-    return 1;
-}
+#include "jobclient.h"
 
 int main(int argc, const char *argv[]) {
     int jobserver_fds[2];
     if (!parse_makeflags(jobserver_fds)) {
         return 1;
     }
-    // NB! Normally a command run with a jobserver gets one "free" job for itself, but since this is run from e.g. a shell script it won't 
+    // NB! Normally a command run with a jobserver gets one "free" job for
+    // itself, but since this is run from e.g. a shell script this won't be
+    // considered.
+    // Our caller needs to know that it always has one more for free...
+    // Maybe this could be done with a wrapper server :)
+    // One hacky workaround is to use jobforce to fake-release a token at the
+    // start and fake-acquire one at the end.
     char token = 0;
-    {
-        ssize_t res = read(jobserver_fds[0], &token, 1);
-        if (res != 1) {
-            perror("read from jobserver");
-            return 1;
-        }
+    if (!acquire_token(jobserver_fds, &token)) {
+        return 1;
     }
+    printf("jobclient: Got token %c (%02x)\n", isprint(token) ? token : '.', token);
     pid_t pid;
     int res = posix_spawnp(&pid, argv[1],
             NULL, /* file actions */
@@ -68,6 +44,6 @@ int main(int argc, const char *argv[]) {
         res = 1;
     }
 leave:
-    write(jobserver_fds[1], &token, 1);
+    release_token(jobserver_fds, token);
     return res;
 }
