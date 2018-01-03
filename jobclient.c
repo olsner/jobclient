@@ -25,7 +25,7 @@ int main(int argc, const char *argv[]) {
     if (!acquire_token(jobserver_fds, &token)) {
         return 1;
     }
-    printf("jobclient: Got token %c (%02x)\n", isprint(token) ? token : '.', token);
+    //printf("jobclient: Got token %c (%02x)\n", isprint(token) ? token : '.', token);
     pid_t pid;
     int res = posix_spawnp(&pid, argv[1],
             NULL, /* file actions */
