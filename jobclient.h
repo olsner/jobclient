@@ -34,12 +34,7 @@ static int parse_makeflags(int *fds) {
 }
 
 static int acquire_token(int *fds, char* token) {
-    ssize_t res = read(fds[0], token, 1);
-    if (res != 1) {
-        perror("read from jobserver");
-        return 0;
-    }
-    return 1;
+    return read(fds[0], token, 1) == 1;
 }
 
 static int release_token(int *fds, char token) {

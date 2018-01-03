@@ -22,6 +22,7 @@ int main(int argc, const char *argv[]) {
     while (d > 0) {
         char token;
         if (!acquire_token(jobserver_fds, &token)) {
+            perror("acquire_token");
             return 1;
         }
         //printf("jobforce: Got token '%c' (%02x)\n", isprint(token) ? token : '.', token);
@@ -31,7 +32,11 @@ int main(int argc, const char *argv[]) {
         // Make seems to give out token '+' all the time and not actually care
         // what is put back into the queue. You can actually see artificially
         // released tokens get re-issued to other clients too :)
-        release_token(jobserver_fds, '-');
+        if (!release_token(jobserver_fds, '-')) {
+            perror("release_token");
+            return 1;
+        }
         d++;
     }
+    return 0;
 }

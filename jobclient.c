@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
     // start and fake-acquire one at the end.
     char token = 0;
     if (!acquire_token(jobserver_fds, &token)) {
+        perror("acquire_token");
         return 1;
     }
     //printf("jobclient: Got token %c (%02x)\n", isprint(token) ? token : '.', token);
@@ -49,6 +50,9 @@ int main(int argc, char *argv[]) {
         res = 1;
     }
 leave:
-    release_token(jobserver_fds, token);
+    if (!release_token(jobserver_fds, token)) {
+        perror("release_token");
+        res = 1;
+    }
     return res;
 }
