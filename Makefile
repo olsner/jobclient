@@ -15,7 +15,7 @@ $(PROGRAMS): jobclient.h
 TESTS = 10
 
 test: $(PROGRAMS)
-	@for (( t = 1; t <= $(TESTS); t++ )); do echo Running test$$t...; env -i make -j3 test$$t || break; echo; done
+	@for t in `seq $(TESTS)`; do echo Running test$$t...; env -i make -j3 test$$t || break; echo; done
 
 # Tests assume running with -j3 (and no concurrent activity), which means that
 # each command actually runs with 2 job tokens available. One job is given
