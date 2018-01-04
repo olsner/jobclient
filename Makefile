@@ -1,6 +1,6 @@
 CFLAGS = -Wall -Werror
 
-PROGRAMS = jobclient jobforce jobcount
+PROGRAMS = jobclient jobforce jobcount jobserver
 
 all: $(PROGRAMS)
 
@@ -16,6 +16,9 @@ TESTS = 10
 
 test: $(PROGRAMS)
 	@for t in `seq $(TESTS)`; do echo Running test$$t...; env -i make -j3 test$$t || break; echo; done
+
+test-jobserver: $(PROGRAMS)
+	@for t in `seq $(TESTS)`; do echo Running test$$t...; env -i ./jobserver -j3 make test$$t || break; echo; done
 
 # Tests assume running with -j3 (and no concurrent activity), which means that
 # each command actually runs with 2 job tokens available. One job is given
