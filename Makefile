@@ -12,7 +12,7 @@ $(PROGRAMS): jobclient.h
 %: %.c
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< $(LIBS)
 
-TESTS = 10
+TESTS = 11
 
 test: test-jobclient test-jobserver
 
@@ -93,3 +93,8 @@ test9:
 test10:
 	+test `./jobcount` -eq 2
 	@echo "PASS - job count was 2"
+
+test11:
+	@echo "The inside makeflags should be empty below"
+	@+echo outside makeflags = $$MAKEFLAGS && \
+	 ./jobserver -d sh -c 'echo inside makeflags = $$MAKEFLAGS'
