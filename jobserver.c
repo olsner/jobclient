@@ -162,8 +162,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    // Now wait for data on the pipe and/or the process to finish, whichever comes first...
-
     // Since WNOHANG is not specified, the only valid returns should be pid
     // (success) or -1 (error)
     if (waitpid(pid, &res, 0) != pid) {
@@ -174,7 +172,4 @@ int main(int argc, char *argv[]) {
     } else {
         return 1;
     }
-
-    // TODO Does returning from main kill threads or wait for them? We want to kill the
-    // server now that our child exited.
 }
