@@ -60,7 +60,8 @@ static void *jobserver_main(void *argp) {
 
     const int rfd = params->rfd, wfd = params->wfd;
     const int max = params->jobs;
-    int used = 0;
+    // The child program we launched counts for one job by itself
+    int used = 1;
 
     for (;;) {
         if (used < max) {
