@@ -14,7 +14,9 @@ $(PROGRAMS): jobclient.h
 
 TESTS = 10
 
-test: $(PROGRAMS)
+test: test-jobclient test-jobserver
+
+test-jobclient: $(PROGRAMS)
 	@for t in `seq $(TESTS)`; do echo Running test$$t...; env -i make -j3 test$$t || break; echo; done
 
 test-jobserver: $(PROGRAMS)
