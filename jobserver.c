@@ -32,13 +32,18 @@ static void strip_makeflags() {
     const char *p = strstr(makeflags, flagname);
     if (p) {
         const char *flagend = strchr(p, ' ');
+        // If --jobserver-fd is followed by -j, strip that one too.
+        // Otherwise the child would use infinite parallelism :)
+        if (flagend && strncmp(flagend, " -j", 3) == 0) {
+            flagend = strchr(flagend + 3, ' ');
+        }
+
         char *buf = strdup(makeflags);
         if (flagend) {
-            memmove(buf + (p - makeflags), flagend, strlen(flagend) + 1);
+            memmove(buf + (p - makeflags), flagend + 1, strlen(flagend));
         } else {
             buf[p - makeflags] = 0;
         }
-        fprintf(stderr, "MAKEFLAGS : (%s) -> (%s)\n", makeflags, buf); // XXX Debug
         setenv("MAKEFLAGS", buf, 1);
         free(buf);
     }
