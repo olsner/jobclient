@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
     bool dryrun = false, hide_server = false;
     int jobs = 8; // TODO Autodetect number of CPUs
     int i = 1;
-    while (argv[i][0] == '-') {
+    while (i < argc && argv[i][0] == '-') {
         switch (argv[i][1]) {
         case 'n':
             dryrun = true;
@@ -101,6 +101,9 @@ int main(int argc, char *argv[]) {
         case 'j':
             jobs = atoi(argv[i] + 2);
             break;
+        default:
+            fprintf(stderr, "Unrecognized flag `%s'.\n", argv[i]);
+            return 1;
         }
         i++;
     }
@@ -110,7 +113,7 @@ int main(int argc, char *argv[]) {
     }
     argv += i - 1;
     argc -= i - 1;
-    if (argc < 1) {
+    if (argc < 2) {
         fprintf(stderr, "jobserver: No command given\n");
         return 1;
     }
