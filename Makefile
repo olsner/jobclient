@@ -1,4 +1,5 @@
 CFLAGS = -Wall -Werror
+LIBS = -lpthread
 
 PROGRAMS = jobclient jobforce jobcount jobserver
 

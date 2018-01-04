@@ -5,8 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
-#include <sys/random.h>
 
 extern char **environ;
 
@@ -78,6 +78,8 @@ static void *jobserver_main(void *argp) {
             }
         }
     }
+
+    return NULL;
 }
 
 int main(int argc, char *argv[]) {
