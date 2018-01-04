@@ -22,11 +22,6 @@ static void append_makeflags(bool dryrun, int rfd, int wfd) {
     snprintf(buf, sizeof(buf), "%s%s --jobserver-fds=%d,%d -j",
             dryrun ? "n" : "", makeflags ? makeflags : "", rfd, wfd);
     setenv("MAKEFLAGS", buf, 1);
-
-    // TODO Might want to set MAKELEVEL too, some makefiles might be adding -jN
-    // automatically depending on MAKELEVEL. OTOH, explicit values of MAKELEVEL
-    // might also be used by some build systems for phased builds and such
-    // madness.
 }
 
 static void strip_makeflags() {
