@@ -31,9 +31,9 @@ step" to avoid starting a process when there are no slots available.
 
 This takes the place of the top-level Make process and provides a jobserver for
 its child process. If the child is itself Make, the jobserver will communicate
-with it using the MAKEFLAGS environment variable.
+with it using the `MAKEFLAGS` environment variable.
 
-jobserver can also be used to "hide" an ambient jobserver from a child process.
+`jobserver` can also be used to "hide" an ambient jobserver from a child process.
 
 ### jobforce ###
 
