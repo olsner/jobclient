@@ -84,7 +84,21 @@ static void *jobserver_main(void *argp) {
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
-        fprintf(stderr, "Usage: jobserver [-n] [-d] [-jN] CMD [ARGS...]\n");
+        fprintf(stderr, "Usage: %s [-n] [-d] [-jN] CMD [ARGS...]\n", argv[0]);
+        fprintf(stderr,
+"\n"
+"Run the given command with arguments and provide it with a jobserver for\n"
+"scheduling concurrent parallel work. The jobserver communicates the file\n"
+"descriptors to use through the MAKEFLAGS environment variable, which is\n"
+"compatible with GNU Make and the jobclient utilities from this package.\n"
+"\n"
+"Options:\n"
+"     -n    add -n (--dry-run) to the MAKEFLAGS sent to the child process\n"
+"           (if not already present)\n"
+"     -d    disable/hide the outside jobserver by filtering MAKEFLAGS\n"
+"     -jN   set the number of concurrent jobs to allow\n"
+"\n"
+);
         return 1;
     }
 
