@@ -1,6 +1,6 @@
-# GNU Make Jobserver Client #
+# GNU Make jobserver and jobclient #
 
-(and some utilities, and maybe later a jobserver too)
+(and some related utilities)
 
 Primarily, this allows shell scripts and other software to submit jobs to a
 running Make job server, waiting for free slots (usually corresponding to CPUs)
@@ -26,6 +26,14 @@ Note that every job has a running process even if it is blocked - if the number
 of jobs is truly large, that might cause trouble in itself. In the future there
 might be a more shell-friendly way to move the job server communication "up one
 step" to avoid starting a process when there are no slots available.
+
+### jobserver ###
+
+This takes the place of the top-level Make process and provides a jobserver for
+its child process. If the child is itself Make, the jobserver will communicate
+with it using the MAKEFLAGS environment variable.
+
+jobserver can also be used to "hide" an ambient jobserver from a child process.
 
 ### jobforce ###
 
