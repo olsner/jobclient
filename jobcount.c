@@ -11,12 +11,15 @@ int main() {
     if (!parse_makeflags(jobserver_fds)) {
         return 1;
     }
-    fcntl(jobserver_fds[0], F_SETFL, O_NONBLOCK);
+    const int flags = fcntl(jobserver_fds[0], F_GETFL);
+    fcntl(jobserver_fds[0], F_SETFL, flags | O_NONBLOCK);
 
     size_t n = 0;
     while (n < MAX_TOKENS && acquire_token(jobserver_fds, &tokens[n])) {
         n++;
     }
+    fcntl(jobserver_fds[0], F_SETFL, flags);
+
     printf("%zu\n", n);
     while (n--) {
         release_token(jobserver_fds, tokens[n]);
