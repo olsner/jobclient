@@ -12,17 +12,17 @@ static int parse_makeflags(int *fds) {
         return 0;
     }
 
-    static const char flagname[] = "--jobserver-fds=";
+    static const char flagname[] = "--jobserver-auth=";
     const char *p = strstr(makeflags, flagname);
     if (!p) {
-        fprintf(stderr, "job: error: --jobserver-fds not in MAKEFLAGS (%s)\n", makeflags);
+        fprintf(stderr, "job: error: --jobserver-auth not in MAKEFLAGS (%s)\n", makeflags);
         return 0;
     }
     p += sizeof(flagname) - 1;
 
     const char *c = strchr(p, ',');
     if (!c) {
-        fprintf(stderr, "job: error: Incorrect --jobserver-fds format\n");
+        fprintf(stderr, "job: error: Incorrect --jobserver-auth format\n");
         return 0;
     }
     c++;
