@@ -19,7 +19,7 @@ static void append_makeflags(bool dryrun, int rfd, int wfd) {
         // Disable dryrun to avoid adding a duplicate
         dryrun = false;
     }
-    snprintf(buf, sizeof(buf), "%s%s --jobserver-fds=%d,%d -j",
+    snprintf(buf, sizeof(buf), "%s%s --jobserver-auth=%d,%d -j",
             dryrun ? "n" : "", makeflags ? makeflags : "", rfd, wfd);
     setenv("MAKEFLAGS", buf, 1);
 }
@@ -28,7 +28,7 @@ static void strip_makeflags() {
     const char *makeflags = getenv("MAKEFLAGS");
     if (!makeflags) return;
 
-    static const char flagname[] = "--jobserver-fds=";
+    static const char flagname[] = "--jobserver-auth=";
     const char *p = strstr(makeflags, flagname);
     if (p) {
         const char *flagend = strchr(p, ' ');

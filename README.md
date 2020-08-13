@@ -83,6 +83,17 @@ take back the extra freed-up job. For example:
 You can also work around it by running a single "last" piece of work (if there
 is one) without wrapping it in `jobclient`.
 
+
+## GNU Make version compatability ##
+
+Somewhere before the GNU Make 4.2.1 release, the protocol changed a bit. Newer
+make sets the job control file descriptor to non-blocking and the file
+descriptors are passed in `--jobserver-auth` instead of `--jobserver-fds`.
+
+The current version supports (only) the new protocol. Check out an older
+version of the code for use with older GNU Make.
+
+
 ## License ##
 
 All the code here is MIT licensed.
