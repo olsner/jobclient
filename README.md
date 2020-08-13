@@ -83,6 +83,13 @@ take back the extra freed-up job. For example:
 You can also work around it by running a single "last" piece of work (if there
 is one) without wrapping it in `jobclient`.
 
+## Known issues ##
+
+* "`acquire_token: Resource temporarily unavailable`"
+
+  The "read" end of the jobserver pipe is sometimes set non-blocking (seen with
+  GNU Make 4.2.1). May be possible to work around on the client side.
+
 ## License ##
 
 All the code here is MIT licensed.
