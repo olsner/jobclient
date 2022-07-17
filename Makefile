@@ -18,10 +18,10 @@ TESTS = 11
 test: test-jobclient test-jobserver
 
 test-jobclient: $(PROGRAMS)
-	@for t in `seq $(TESTS)`; do echo Running test$$t...; env -i make -j3 test$$t || break; echo; done
+	@for t in `seq $(TESTS)`; do echo Running test$$t...; env -i "PATH=$$PATH" make -j3 test$$t || break; echo; done
 
 test-jobserver: $(PROGRAMS)
-	@for t in `seq $(TESTS)`; do echo Running test$$t...; env -i ./jobserver -j3 make test$$t || break; echo; done
+	@for t in `seq $(TESTS)`; do echo Running test$$t...; env -i "PATH=$$PATH" ./jobserver -j3 make test$$t || break; echo; done
 
 # Tests assume running with -j3 (and no concurrent activity), which means that
 # each command actually runs with 2 job tokens available. One job is given
